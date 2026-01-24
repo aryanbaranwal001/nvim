@@ -4,3 +4,6 @@
 
 -- M: in normal mode ; will funtion as :
 vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
+
+-- M: remove the project root given by lsp
+vim.g.root_spec = { { ".git", "lua" }, "cwd" }
