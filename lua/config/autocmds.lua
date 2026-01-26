@@ -24,3 +24,19 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.opt_local.spell = false
   end,
 })
+
+-- M: Reload files changed outside Neovim and change the buffer (lazygit discard, etc.)
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  callback = function()
+    vim.cmd("checktime")
+  end,
+})
+
+vim.api.nvim_create_autocmd("TermClose", {
+  pattern = "*lazygit*",
+  callback = function()
+    vim.cmd("checktime")
+  end,
+})
