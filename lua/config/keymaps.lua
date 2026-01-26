@@ -7,3 +7,6 @@ vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
 
 -- M: remove the project root given by lsp
 vim.g.root_spec = { { ".git", "lua" }, "cwd" }
+
+-- M: lazydocker keymap
+vim.keymap.set("n", "<leader>kd", ":term lazydocker<CR>i", { desc = "LazyDocker" })
