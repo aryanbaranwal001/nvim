@@ -10,3 +10,19 @@ vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "CmdlineEnter" }, {
     end
   end,
 })
+
+-- M: removing diagnostics from markdown
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  pattern = { "*.md", "*.mdx" }, -- Note the wildcard *.md here
+  callback = function(args)
+    vim.diagnostic.enable(false, { bufnr = args.buf })
+  end,
+})
+
+-- M: Force spellcheck off for every buffer that opens
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertEnter" }, {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
