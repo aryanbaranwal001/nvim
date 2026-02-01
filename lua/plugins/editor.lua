@@ -1,4 +1,4 @@
--- M: updates the buffer in neovim in real-time (file watcher)
+-- M: updates the buffer in neovim in real-time (realtime file watcher)
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
