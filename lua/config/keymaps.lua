@@ -7,3 +7,8 @@ vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
 
 -- M: open lazydocker keymap
 vim.keymap.set("n", "<leader>kd", ":term lazydocker<CR>i", { desc = "LazyDocker" })
+
+-- M: map leader bd to leader h
+vim.keymap.set("n", "<leader>h", function()
+  require("snacks").bufdelete()
+end, { desc = "Delete Buffer" })
