@@ -1,3 +1,4 @@
+-- M: leader p (yank list) does yank instead of paste after hitting enter
 return {
   {
     "folke/snacks.nvim",
