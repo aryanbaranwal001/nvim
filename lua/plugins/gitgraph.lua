@@ -1,4 +1,3 @@
--- M: add gitgraph plugin and its related setup
 return {
   {
     "isakbm/gitgraph.nvim",
@@ -26,7 +25,6 @@ return {
         fields = { "hash", "timestamp", "author", "branch_name", "tag" },
       },
       hooks = {
-        -- IMPACT: When you hit Enter on a commit, you now get a choice
         on_select_commit = function(commit)
           vim.ui.select({ "Diffview Open", "Checkout Commit" }, {
             prompt = "Select Action:",
@@ -37,16 +35,12 @@ return {
             if not choice then
               return
             end
-
             if choice == "Diffview Open" then
               vim.notify("DiffviewOpen " .. commit.hash .. "^!")
               vim.cmd(":DiffviewOpen " .. commit.hash .. "^!")
             elseif choice == "Checkout Commit" then
-              -- Perform the checkout
               vim.cmd(":!git checkout " .. commit.hash)
-              -- Optional: Notify the user
               vim.notify("Checked out " .. commit.hash, vim.log.levels.INFO)
-              -- Optional: Redraw the graph to show updated HEAD
               require("gitgraph").draw({}, { all = true, max_count = 5000 })
             end
           end)
@@ -57,9 +51,27 @@ return {
         end,
       },
     },
+
     config = function(_, opts)
       require("gitgraph").setup(opts)
 
+      local colors = {
+        hash = "#9aa5ce", -- Duller Blue-Grey (Soft, not shiny)
+        time = "#4EC9B0", -- Bright Teal (Kept for contrast)
+        author = "#545c7e", -- Dark Muted Grey (Background)
+        branch = "#ff9e64", -- Orange (Kept)
+        msg = "#a6e3a1", -- Bright Vibrant Green (Pop!)
+      }
+
+      vim.api.nvim_set_hl(0, "GitGraphHash", { fg = colors.hash })
+      vim.api.nvim_set_hl(0, "GitGraphTimestamp", { fg = colors.time })
+      vim.api.nvim_set_hl(0, "GitGraphAuthor", { fg = colors.author, italic = true })
+      vim.api.nvim_set_hl(0, "GitGraphBranchName", { fg = colors.branch, bold = true })
+
+      -- Apply the bright green to the message text
+      vim.api.nvim_set_hl(0, "GitGraphMsg", { fg = colors.msg })
+
+      -- Buffer Config
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "gitgraph",
         callback = function()
@@ -69,6 +81,7 @@ return {
         end,
       })
     end,
+
     keys = {
       {
         "<leader>gl",
