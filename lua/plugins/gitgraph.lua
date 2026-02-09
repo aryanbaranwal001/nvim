@@ -1,3 +1,4 @@
+-- M: add gitgraph plugin and its related setup
 return {
   {
     "isakbm/gitgraph.nvim",
