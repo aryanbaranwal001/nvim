@@ -35,6 +35,19 @@ return {
         end,
       },
     },
+    config = function(_, opts)
+      require("gitgraph").setup(opts)
+
+      -- Auto-command to configure the gitgraph buffer correctly
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "gitgraph",
+        callback = function()
+          vim.opt_local.buflisted = false
+          vim.opt_local.buftype = "nofile" -- Prevents "Overwrite existing file" popup
+          vim.keymap.set("n", "q", "<cmd>bd<cr>", { buffer = true, desc = "Close GitGraph" })
+        end,
+      })
+    end,
     keys = {
       {
         "<leader>gl",
