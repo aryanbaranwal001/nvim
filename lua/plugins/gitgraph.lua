@@ -21,8 +21,11 @@ return {
         commit_end = "",
       },
       format = {
-        timestamp = "%d-%b-%Y %H:%M",
-        fields = { "hash", "timestamp", "author", "branch_name", "tag" },
+        -- 1. CLEANER TIMESTAMP: "09-Feb 18:08" (Removed Year)
+        timestamp = "%d %b | %H:%M ",
+        -- 2. BETTER ORDER: Hash -> Time -> Branch -> Author
+        -- Moving 'author' to the end prevents long names from pushing the branch labels away
+        fields = { "hash", "timestamp", "branch_name", "tag", "author" },
       },
       hooks = {
         on_select_commit = function(commit)
@@ -51,27 +54,24 @@ return {
         end,
       },
     },
-
     config = function(_, opts)
       require("gitgraph").setup(opts)
 
+      -- Custom Colors (Vibrant Green Msg, Muted Hash)
       local colors = {
-        hash = "#9aa5ce", -- Duller Blue-Grey (Soft, not shiny)
-        time = "#4EC9B0", -- Bright Teal (Kept for contrast)
-        author = "#545c7e", -- Dark Muted Grey (Background)
-        branch = "#ff9e64", -- Orange (Kept)
-        msg = "#a6e3a1", -- Bright Vibrant Green (Pop!)
+        hash = "#9aa5ce", -- Duller Blue-Grey
+        time = "#4EC9B0", -- Bright Teal
+        author = "#545c7e", -- Dark Muted Grey
+        branch = "#ff9e64", -- Orange
+        msg = "#a6e3a1", -- Vibrant Green
       }
 
       vim.api.nvim_set_hl(0, "GitGraphHash", { fg = colors.hash })
       vim.api.nvim_set_hl(0, "GitGraphTimestamp", { fg = colors.time })
       vim.api.nvim_set_hl(0, "GitGraphAuthor", { fg = colors.author, italic = true })
       vim.api.nvim_set_hl(0, "GitGraphBranchName", { fg = colors.branch, bold = true })
-
-      -- Apply the bright green to the message text
       vim.api.nvim_set_hl(0, "GitGraphMsg", { fg = colors.msg })
 
-      -- Buffer Config
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "gitgraph",
         callback = function()
@@ -81,7 +81,6 @@ return {
         end,
       })
     end,
-
     keys = {
       {
         "<leader>gl",
