@@ -1,23 +1,24 @@
 return {
   {
     "isakbm/gitgraph.nvim",
-    dependencies = { "sindrets/diffview.nvim" },
+    dependencies = {
+      {
+        "sindrets/diffview.nvim",
+        opts = {
+          keymaps = {
+            view = { ["q"] = "<cmd>DiffviewClose<cr>" },
+            file_panel = { ["q"] = "<cmd>DiffviewClose<cr>" },
+            file_history = { ["q"] = "<cmd>DiffviewClose<cr>" },
+          },
+        },
+      },
+    },
     opts = {
       symbols = {
-        -- merge_commit = "",
-        -- merge_commit_end = "",
-        -- commit = "",
-        -- commit_end = "",
         merge_commit = "",
         merge_commit_end = "",
         commit = "",
-        commit_end = "", -- You can also change the line shapes if you want:
-        -- GVER = "│",
-        -- GHOR = "─",
-        -- GCLD = "╮",
-        -- GCRD = "╭",
-        -- GCLU = "╯",
-        -- GCRU = "╰",
+        commit_end = "",
       },
       format = {
         timestamp = "%d-%b-%Y %H:%M",
