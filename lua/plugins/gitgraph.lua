@@ -60,17 +60,17 @@ return {
       -- Custom Colors (Vibrant Green Msg, Muted Hash)
       local colors = {
         hash = "#9aa5ce", -- Duller Blue-Grey
-        time = "#4EC9B0", -- Bright Teal
         author = "#545c7e", -- Dark Muted Grey
         branch = "#ff9e64", -- Orange
-        msg = "#a6e3a1", -- Vibrant Green
+        msg = "#4EC9B0", -- Bright Teal
+        time = "#769c73", -- Vibrant Green
       }
 
       vim.api.nvim_set_hl(0, "GitGraphHash", { fg = colors.hash })
       vim.api.nvim_set_hl(0, "GitGraphTimestamp", { fg = colors.time })
       vim.api.nvim_set_hl(0, "GitGraphAuthor", { fg = colors.author, italic = true })
       vim.api.nvim_set_hl(0, "GitGraphBranchName", { fg = colors.branch, bold = true })
-      vim.api.nvim_set_hl(0, "GitGraphMsg", { fg = colors.msg })
+      vim.api.nvim_set_hl(0, "GitGraphBranchMsg", { fg = colors.msg })
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "gitgraph",
