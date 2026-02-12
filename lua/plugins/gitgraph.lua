@@ -22,10 +22,7 @@ return {
         commit_end = "",
       },
       format = {
-        -- 1. CLEANER TIMESTAMP: "09-Feb 18:08" (Removed Year)
         timestamp = "%d %b | %H:%M ",
-        -- 2. BETTER ORDER: Hash -> Time -> Branch -> Author
-        -- Moving 'author' to the end prevents long names from pushing the branch labels away
         fields = { "hash", "timestamp", "branch_name", "tag", "author" },
       },
       hooks = {
@@ -58,7 +55,6 @@ return {
     config = function(_, opts)
       require("gitgraph").setup(opts)
 
-      -- Custom Colors (Vibrant Green Msg, Muted Hash)
       local colors = {
         hash = "#9aa5ce", -- Duller Blue-Grey
         author = "#545c7e", -- Dark Muted Grey
@@ -79,6 +75,44 @@ return {
           vim.opt_local.buflisted = false
           vim.opt_local.buftype = "nofile"
           vim.keymap.set("n", "q", "<cmd>bd<cr>", { buffer = true, desc = "Close GitGraph" })
+          -- 'K' to show detailed commit info
+          vim.keymap.set("n", "K", function()
+            local line = vim.api.nvim_get_current_line()
+            local hash = line:match("%x%x%x%x%x%x%x+")
+            if not hash then
+              return
+            end
+
+            -- 1. Get branches that contain this commit
+            local branches = vim.fn.systemlist("git branch --contains " .. hash)
+            local branch_txt = ""
+            if #branches > 0 then
+              -- Clean up branch names (remove * and spaces)
+              for i, b in ipairs(branches) do
+                branches[i] = b:gsub("^[*%s]+", "")
+              end
+              branch_txt = table.concat(branches, ", ")
+            else
+              branch_txt = "(detached)"
+            end
+
+            -- 2. Get Commit Details
+            local output = vim.fn.systemlist({
+              "git",
+              "show",
+              "--shortstat",
+              "--date=format:%d %b %Y at %I:%M %p",
+              -- Removed indentation spaces before %s to fix alignment
+              "--format=Commit: %H%nAuthor: %an%nDate:   %ad%n%n%s%n%n%b",
+              hash,
+            })
+
+            -- 3. Insert Branch info at the 2nd line (below Commit hash)
+            table.insert(output, 2, "Branch: " .. branch_txt)
+
+            vim.lsp.util.open_floating_preview(output, "git", { border = "rounded", focusable = true })
+          end, { buffer = true, desc = "Show Commit Info" }) -- M: add K info functionality
+          -- till here for K info functionality
         end,
       })
     end,
