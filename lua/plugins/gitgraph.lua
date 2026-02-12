@@ -75,27 +75,27 @@ return {
           vim.opt_local.buflisted = false
           vim.opt_local.buftype = "nofile"
           vim.keymap.set("n", "q", "<cmd>bd<cr>", { buffer = true, desc = "Close GitGraph" })
-          -- -- -- 'K' to show detailed commit info
-          vim.keymap.set("n", "K", function()
-            local line = vim.api.nvim_get_current_line()
-            local hash = line:match("%x%x%x%x%x%x%x+")
-            if not hash then
-              return
-            end
-
-            -- --
-            local output = vim.fn.systemlist({
-              "git",
-              "show",
-              "--date=format:%d %b %Y at %I:%M %p",
-              "--shortstat", -- Keeps file stats very brief (1 line)
-              "--format=Commit: %H%nAuthor: %an%nDate:   %ad%n%n%s%n%n%b",
-              hash,
-            })
-
-            vim.lsp.util.open_floating_preview(output, "git", { border = "rounded", focusable = true })
-          end, { buffer = true, desc = "Show Commit Info" })
-          -- -- -- till here for K info functionality
+          -- ---------------- 'K' to show detailed commit info
+          -- vim.keymap.set("n", "K", function()
+          --   local line = vim.api.nvim_get_current_line()
+          --   local hash = line:match("%x%x%x%x%x%x%x+")
+          --   if not hash then
+          --     return
+          --   end
+          --
+          --   -- --
+          --   local output = vim.fn.systemlist({
+          --     "git",
+          --     "show",
+          --     "--date=format:%d %b %Y at %I:%M %p",
+          --     "--shortstat", -- Keeps file stats very brief (1 line)
+          --     "--format=Commit: %H%nAuthor: %an%nDate:   %ad%n%n%s%n%n%b",
+          --     hash,
+          --   })
+          --
+          --   vim.lsp.util.open_floating_preview(output, "git", { border = "rounded", focusable = true })
+          -- end, { buffer = true, desc = "Show Commit Info" })
+          -- ---------------- till here for K info functionality
         end,
       })
     end,
