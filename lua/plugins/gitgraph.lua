@@ -1,3 +1,4 @@
+-- M: added gitgraph to neovim
 return {
   {
     "isakbm/gitgraph.nvim",
