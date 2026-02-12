@@ -75,7 +75,7 @@ return {
           vim.opt_local.buflisted = false
           vim.opt_local.buftype = "nofile"
           vim.keymap.set("n", "q", "<cmd>bd<cr>", { buffer = true, desc = "Close GitGraph" })
-          -- 'K' to show detailed commit info
+          -- -- -- 'K' to show detailed commit info
           vim.keymap.set("n", "K", function()
             local line = vim.api.nvim_get_current_line()
             local hash = line:match("%x%x%x%x%x%x%x+")
@@ -83,36 +83,19 @@ return {
               return
             end
 
-            -- 1. Get branches that contain this commit
-            local branches = vim.fn.systemlist("git branch --contains " .. hash)
-            local branch_txt = ""
-            if #branches > 0 then
-              -- Clean up branch names (remove * and spaces)
-              for i, b in ipairs(branches) do
-                branches[i] = b:gsub("^[*%s]+", "")
-              end
-              branch_txt = table.concat(branches, ", ")
-            else
-              branch_txt = "(detached)"
-            end
-
-            -- 2. Get Commit Details
+            -- --
             local output = vim.fn.systemlist({
               "git",
               "show",
-              "--shortstat",
               "--date=format:%d %b %Y at %I:%M %p",
-              -- Removed indentation spaces before %s to fix alignment
+              "--shortstat", -- Keeps file stats very brief (1 line)
               "--format=Commit: %H%nAuthor: %an%nDate:   %ad%n%n%s%n%n%b",
               hash,
             })
 
-            -- 3. Insert Branch info at the 2nd line (below Commit hash)
-            table.insert(output, 2, "Branch: " .. branch_txt)
-
             vim.lsp.util.open_floating_preview(output, "git", { border = "rounded", focusable = true })
-          end, { buffer = true, desc = "Show Commit Info" }) -- M: add K info functionality
-          -- till here for K info functionality
+          end, { buffer = true, desc = "Show Commit Info" })
+          -- -- -- till here for K info functionality
         end,
       })
     end,
