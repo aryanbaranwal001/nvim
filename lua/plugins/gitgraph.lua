@@ -21,6 +21,7 @@ return {
         commit = "",
         commit_end = "",
       },
+
       format = {
         timestamp = "%d %b | %H:%M ",
         fields = { "hash", "timestamp", "branch_name", "tag", "author" },
@@ -54,6 +55,21 @@ return {
     },
     config = function(_, opts)
       require("gitgraph").setup(opts)
+
+      -- [FIX] 1. Force High Contrast Neon Colors
+      -- The plugin uses "GitGraphBranch1" through "GitGraphBranch5"
+
+      local neon_colors = {
+        "#D7263D", -- Deep Crimson
+        "#1B998B", -- Teal
+        "#F4A261", -- Burnt Orange
+        "#2D6CDF", -- Steel Blue
+        "#6A00A8", -- Deep Grape Violet
+      }
+      for i, color in ipairs(neon_colors) do
+        vim.api.nvim_set_hl(0, "GitGraphBranch" .. i, { fg = color, bold = true })
+      end
+      -- [END FIX]
 
       local colors = {
         hash = "#9aa5ce", -- Duller Blue-Grey
