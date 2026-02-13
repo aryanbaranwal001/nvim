@@ -2,15 +2,15 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
+      -- M: keeps > raw
+      quote = { enabled = false }, -- Keeps > raw
+
       heading = {
-        -- M: remove header highlighting
-        backgrounds = {},
+        backgrounds = {}, -- Removes header background colors
+        sign = false, -- Keeps ==== raw
       },
-      -- M: This prevents the plugin from forcing conceallevel = 3
-      conceal = {
-        enabled = false,
-      },
-      -- M: Stop it from forcing conceallevel back to 3 during window focus/render events
+
+      -- M: set the conceallevel=0
       win_options = {
         conceallevel = { rendered = 0, rendered_off = 0 },
       },
