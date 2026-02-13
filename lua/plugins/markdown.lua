@@ -1,11 +1,18 @@
--- M: remove header highlighting in markdown
 return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
       heading = {
-        -- This removes the background colors for headings
+        -- M: remove header highlighting
         backgrounds = {},
+      },
+      -- M: This prevents the plugin from forcing conceallevel = 3
+      conceal = {
+        enabled = false,
+      },
+      -- M: Stop it from forcing conceallevel back to 3 during window focus/render events
+      win_options = {
+        conceallevel = { rendered = 0, rendered_off = 0 },
       },
     },
   },
