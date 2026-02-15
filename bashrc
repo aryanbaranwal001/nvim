@@ -40,6 +40,10 @@ create() {
     git push -u origin main
 }
 
+export EDITOR=nvim
+export VISUAL=nvim
+
+# changing dir in yazi changes dir in terminal
 function y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   command yazi "$@" --cwd-file="$tmp"
