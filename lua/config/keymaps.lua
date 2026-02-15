@@ -34,3 +34,8 @@ vim.keymap.set("n", "<C-g>", function()
     keys = { q = "close", ["<Esc>"] = "close" },
   })
 end, { desc = "Show Full File Path" })
+
+-- M: remap following keymaps for faster access in windows mode
+local map = vim.keymap.set
+map("n", "<leader>w-", "<C-w>_", { desc = "Maximize Height" })
+map("n", "<leader>w\\", "<C-w>|", { desc = "Maximize Width" })
