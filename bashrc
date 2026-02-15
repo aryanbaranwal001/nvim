@@ -1,4 +1,3 @@
-# .bashrc configs
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -19,6 +18,8 @@ alias n='nvim'
 alias q='exit'
 alias adusr='sudo usermod -aG docker "$USER"'
 alias newdoc='newgrp docker'
+
+alias bashgit='cp -f ~/.bashrc ~/.config/nvim/bashrc'
 
 alias curl='curl-safe'
 
