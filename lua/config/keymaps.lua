@@ -39,3 +39,7 @@ end, { desc = "Show Full File Path" })
 local map = vim.keymap.set
 map("n", "<leader>w-", "<C-w>_", { desc = "Maximize Height" })
 map("n", "<leader>w\\", "<C-w>|", { desc = "Maximize Width" })
+
+-- M: configs for delete without yank
+-- Pressing 'm' (for "mute" or "minus") primes the black hole register
+vim.keymap.set({ "n", "v" }, "m", [["_]], { desc = "Prime Black Hole Register" })
