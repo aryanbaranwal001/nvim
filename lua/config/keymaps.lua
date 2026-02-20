@@ -43,3 +43,7 @@ map("n", "<leader>w\\", "<C-w>|", { desc = "Maximize Width" })
 -- M: configs for delete without yank
 -- Pressing 'm' (for "mute" or "minus") primes the black hole register
 vim.keymap.set({ "n", "v" }, "m", [["_]], { desc = "Prime Black Hole Register" })
+
+-- M: maps following so that unintended u (undo) doesn't happen
+vim.keymap.set("n", "<C-k>", "<C-u>", { desc = "Scroll up half page" })
+vim.keymap.set("n", "<C-j>", "<C-d>", { desc = "Scroll down half page" })
