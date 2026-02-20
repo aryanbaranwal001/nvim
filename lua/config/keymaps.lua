@@ -45,8 +45,8 @@ map("n", "<leader>w\\", "<C-w>|", { desc = "Maximize Width" })
 vim.keymap.set({ "n", "v" }, "m", [["_]], { desc = "Prime Black Hole Register" })
 
 -- M: maps following so that unintended u (undo) doesn't happen
-vim.keymap.set("n", "<C-k>", "<C-u>", { desc = "Scroll up half page" })
-vim.keymap.set("n", "<C-j>", "<C-d>", { desc = "Scroll down half page" })
+vim.keymap.set({ "n", "v" }, "<C-k>", "<C-u>", { desc = "Scroll up half page" })
+vim.keymap.set({ "n", "v" }, "<C-j>", "<C-d>", { desc = "Scroll down half page" })
 
 -- Ctrl+u = Undo
 vim.keymap.set("n", "<C-u>", "u", { desc = "Undo" })
