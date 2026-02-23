@@ -51,3 +51,6 @@ vim.keymap.set({ "n", "v" }, "<C-j>", "<C-d>", { desc = "Scroll down half page" 
 -- Ctrl+u = Undo
 vim.keymap.set("n", "<C-u>", "u", { desc = "Undo" })
 vim.keymap.set("n", "<C-r>", "<C-r>", { desc = "Redo" })
+
+-- Disables 'u' in Normal, Visual, Select, and Operator-pending modes
+vim.keymap.set({ "n", "v", "o" }, "u", "<nop>", { noremap = true, silent = true })
