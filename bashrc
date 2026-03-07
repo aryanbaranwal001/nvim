@@ -18,11 +18,8 @@ alias n='nvim'
 alias q='exit'
 alias adusr='sudo usermod -aG docker "$USER"'
 alias newdoc='newgrp docker'
-
-alias bashgit='cp -f ~/.bashrc ~/.config/nvim/bashrc'
-
-alias curl='curl-safe'
-
+alias cv='cd ~/vscodeprojects'
+alias c='clear'
 # creating repo from terminal
 create() {
   REPO_NAME=$1
