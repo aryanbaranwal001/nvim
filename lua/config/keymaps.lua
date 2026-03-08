@@ -1,7 +1,3 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
-
 -- M: in normal mode ; will funtion as :
 vim.keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
 
@@ -48,9 +44,43 @@ vim.keymap.set({ "n", "v" }, "m", [["_]], { desc = "Prime Black Hole Register" }
 vim.keymap.set({ "n", "v" }, "<C-k>", "<C-u>", { desc = "Scroll up half page" })
 vim.keymap.set({ "n", "v" }, "<C-j>", "<C-d>", { desc = "Scroll down half page" })
 
--- Ctrl+u = Undo
+-- M: Ctrl+u = Undo
 vim.keymap.set("n", "<C-u>", "u", { desc = "Undo" })
 vim.keymap.set("n", "<C-r>", "<C-r>", { desc = "Redo" })
 
--- Disables 'u' in Normal, Visual, Select, and Operator-pending modes
+-- M: Disables 'u' in Normal, Visual, Select, and Operator-pending modes
 vim.keymap.set({ "n", "v", "o" }, "u", "<nop>", { noremap = true, silent = true })
+
+-- M: Cycling logic for terminals
+local function cycle_terminals()
+  local snacks = require("snacks")
+  local terms = snacks.terminal.list()
+
+  if #terms == 0 then
+    snacks.terminal.toggle()
+    return
+  end
+
+  -- Find the current visible terminal index
+  local current_idx = nil
+  for i, term in ipairs(terms) do
+    -- Check if the terminal has a window and if that window is actually open
+    if term.win and vim.api.nvim_win_is_valid(term.win) then
+      current_idx = i
+      break
+    end
+  end
+
+  if current_idx then
+    -- Hide current, calculate next index, then show it
+    terms[current_idx]:hide()
+    local next_idx = (current_idx % #terms) + 1
+    terms[next_idx]:show()
+  else
+    -- If no terminal is currently visible, show the last accessed one
+    terms[1]:show()
+  end
+end
+
+-- Keymap for both Normal and Terminal modes
+vim.keymap.set({ "n", "t" }, "<C-]>", cycle_terminals, { desc = "Cycle Terminals" })
