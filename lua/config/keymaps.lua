@@ -52,35 +52,56 @@ vim.keymap.set("n", "<C-r>", "<C-r>", { desc = "Redo" })
 vim.keymap.set({ "n", "v", "o" }, "u", "<nop>", { noremap = true, silent = true })
 
 -- M: Cycling logic for terminals
-local function cycle_terminals()
+local function get_snacks_terms()
   local snacks = require("snacks")
   local terms = snacks.terminal.list()
 
   if #terms == 0 then
     snacks.terminal.toggle()
-    return
+    return nil, nil
   end
 
-  -- Find the current visible terminal index
   local current_idx = nil
   for i, term in ipairs(terms) do
-    -- Check if the terminal has a window and if that window is actually open
     if term.win and vim.api.nvim_win_is_valid(term.win) then
       current_idx = i
       break
     end
   end
+  return terms, current_idx
+end
+
+local function cycle_next()
+  local terms, current_idx = get_snacks_terms()
+  if not terms or #terms == 0 then
+    return
+  end
 
   if current_idx then
-    -- Hide current, calculate next index, then show it
     terms[current_idx]:hide()
     local next_idx = (current_idx % #terms) + 1
     terms[next_idx]:show()
   else
-    -- If no terminal is currently visible, show the last accessed one
     terms[1]:show()
   end
 end
 
--- Keymap for both Normal and Terminal modes
-vim.keymap.set({ "n", "t" }, "<C-]>", cycle_terminals, { desc = "Cycle Terminals" })
+local function cycle_prev()
+  local terms, current_idx = get_snacks_terms()
+  if not terms or #terms == 0 then
+    return
+  end
+
+  if current_idx then
+    terms[current_idx]:hide()
+    -- Wrap-around logic for "previous"
+    local prev_idx = (current_idx - 2 + #terms) % #terms + 1
+    terms[prev_idx]:show()
+  else
+    terms[#terms]:show()
+  end
+end
+
+-- Keymaps
+vim.keymap.set({ "n", "t" }, "<C-]>", cycle_next, { desc = "Next Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-[>", cycle_prev, { desc = "Prev Terminal" })
