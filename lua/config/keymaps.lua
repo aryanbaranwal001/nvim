@@ -105,3 +105,27 @@ end
 -- Keymaps
 vim.keymap.set({ "n", "t" }, "<C-]>", cycle_next, { desc = "Next Terminal" })
 vim.keymap.set({ "n", "t" }, "<C-[>", cycle_prev, { desc = "Prev Terminal" })
+
+-- M: make ctrl / to strictly close the current terminal window
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = vim.api.nvim_create_augroup("terminal_smart_close", { clear = true }),
+  callback = function(args)
+    local function smart_toggle()
+      if vim.v.count > 0 then
+        -- Let Snacks handle the numbered terminal natively using the count
+        require("snacks").terminal()
+      else
+        -- Cleanly close the current terminal window
+        vim.cmd("close")
+      end
+    end
+
+    -- Normal mode bindings
+    vim.keymap.set("n", "<C-/>", smart_toggle, { buffer = args.buf, silent = true })
+    vim.keymap.set("n", "<C-_>", smart_toggle, { buffer = args.buf, silent = true })
+
+    -- Terminal mode bindings
+    vim.keymap.set("t", "<C-/>", "<cmd>close<cr>", { buffer = args.buf, silent = true })
+    vim.keymap.set("t", "<C-_>", "<cmd>close<cr>", { buffer = args.buf, silent = true })
+  end,
+})
