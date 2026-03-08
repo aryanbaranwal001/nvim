@@ -129,3 +129,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.keymap.set("t", "<C-_>", "<cmd>close<cr>", { buffer = args.buf, silent = true })
   end,
 })
+
+-- M: remap esc esc to ctrl space for faster normal mode entry
+vim.keymap.set("t", "<C-Space>", "<C-\\><C-n>", { desc = "Terminal Normal Mode" })
