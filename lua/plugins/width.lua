@@ -3,8 +3,14 @@
 -- so we check getline() to only show numbers on lines with real content.
 _G.snacks_explorer_statuscol = function()
   local lnum = vim.v.lnum
-  local content = vim.fn.getline(lnum)
-  if content == nil or content == "" then
+  -- Use statusline_winid to get the window being drawn (not the focused one)
+  local winid = vim.g.statusline_winid
+  if not winid or not vim.api.nvim_win_is_valid(winid) then
+    return " "
+  end
+  local bufnr = vim.api.nvim_win_get_buf(winid)
+  local ok, lines = pcall(vim.api.nvim_buf_get_lines, bufnr, lnum - 1, lnum, false)
+  if not ok or not lines[1] or lines[1] == "" then
     return " "
   end
   local relnum = vim.v.relnum
