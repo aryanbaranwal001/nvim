@@ -3,9 +3,19 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
-      explorer = {
-        -- This handles the default configuration
-        layout = { layout = { width = 28 } },
+      picker = {
+        sources = {
+          explorer = {
+            win = {
+              list = {
+                wo = {
+                  relativenumber = true,
+                  number = true,
+                },
+              },
+            },
+          },
+        },
       },
     },
 
