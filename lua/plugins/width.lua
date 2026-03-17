@@ -14,7 +14,7 @@ _G.snacks_explorer_statuscol = function()
     return " "
   end
   local relnum = vim.v.relnum
-  return (relnum == 0 and tostring(lnum) or tostring(relnum)) .. " "
+  return relnum == 0 and tostring(lnum) or tostring(relnum)
 end
 
 return {
