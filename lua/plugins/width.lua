@@ -8,17 +8,11 @@ return {
         layout = { layout = { width = 28 } },
       },
     },
+
+    -- M: sets the default widht of the leader e file exploere
     keys = {
-      -- This fixes the 'undefined global' by requiring snacks only when pressed
       {
         "<leader>e",
-        function()
-          require("snacks").explorer({ layout = { layout = { width = 28 } } })
-        end,
-        desc = "File Explorer",
-      },
-      {
-        "<leader>fe",
         function()
           require("snacks").explorer({ layout = { layout = { width = 28 } } })
         end,
