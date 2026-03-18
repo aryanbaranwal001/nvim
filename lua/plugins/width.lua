@@ -47,7 +47,7 @@ return {
       {
         "<leader>e",
         function()
-          require("snacks").explorer({ layout = { layout = { width = 28 } } })
+          require("snacks").explorer({ layout = { layout = { width = 30 } } })
         end,
         desc = "File Explorer",
       },
