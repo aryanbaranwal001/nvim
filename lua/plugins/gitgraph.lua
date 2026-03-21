@@ -28,7 +28,7 @@ return {
       },
       hooks = {
         on_select_commit = function(commit)
-          vim.ui.select({ "Diffview Open", "Checkout Commit" }, {
+          vim.ui.select({ "Checkout Commit", "Diffview Open" }, {
             prompt = "Select Action:",
             format_item = function(item)
               return "➜ " .. item
