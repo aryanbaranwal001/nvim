@@ -132,3 +132,11 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- M: remap esc esc to ctrl space for faster normal mode entry
 vim.keymap.set("t", "<A-Esc>", "<C-\\><C-n>", { desc = "Terminal Normal Mode" })
+
+-- M: to toggle between tabs more effectively
+vim.keymap.set("n", "<A-]>", "gt", { desc = "Next tab" })
+vim.keymap.set("n", "<A-[>", "gT", { desc = "Prev tab" })
+
+-- M: for opening and closing tabs
+vim.keymap.set("n", "<leader>tn", ":tabnew<CR>")
+vim.keymap.set("n", "<leader>tx", ":tabclose<CR>")
