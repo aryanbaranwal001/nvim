@@ -19,6 +19,19 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   end,
 })
 
+-- M: Insert `// %%` cell marker on next line in Rust files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function(args)
+    vim.keymap.set("n", "<leader>j", function()
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      vim.api.nvim_buf_set_lines(args.buf, row, row, false, { "// %% " })
+      vim.api.nvim_win_set_cursor(0, { row + 1, 6 })
+      vim.cmd("startinsert!")
+    end, { buffer = args.buf, desc = "Insert // %% cell marker below (Rust)" })
+  end,
+})
+
 -- M: Force spellcheck off for every buffer that opens
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertEnter" }, {
   pattern = "*",
