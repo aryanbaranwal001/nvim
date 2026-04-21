@@ -44,6 +44,10 @@ vim.keymap.set({ "n", "v" }, "m", [["_]], { desc = "Prime Black Hole Register" }
 vim.keymap.set({ "n", "v" }, "<C-k>", "<C-u>", { desc = "Scroll up half page" })
 vim.keymap.set({ "n", "v" }, "<C-j>", "<C-d>", { desc = "Scroll down half page" })
 
+-- M: Ctrl+Shift+j/k to navigate windows up/down (requires kitty keyboard protocol)
+vim.keymap.set("n", "<C-S-j>", "<C-w>j", { desc = "Go to lower window" })
+vim.keymap.set("n", "<C-S-k>", "<C-w>k", { desc = "Go to upper window" })
+
 -- M: Ctrl+u = Undo
 vim.keymap.set("n", "<C-u>", "u", { desc = "Undo" })
 vim.keymap.set("n", "<C-r>", "<C-r>", { desc = "Redo" })
