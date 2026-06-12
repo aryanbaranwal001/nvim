@@ -4,3 +4,6 @@
 
 -- M: enable wrapping ability of h j k l
 vim.opt.whichwrap:append("<,>,h,l,[,]")
+
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
