@@ -7,6 +7,9 @@
 ################################################# My Things
 [[ $- == *i* ]] && source ~/.local/share/blesh/ble.sh --noattach
 
+# Disable XON/XOFF flow control so Ctrl+S never freezes the terminal PTY
+stty -ixon 2>/dev/null
+
 eval "$(starship init bash)"
 alias obsync='rclone sync ~/obsidianVaults obsidianNotes:obsidianVaults --progress'
 alias ck='cargo check'
@@ -16,10 +19,38 @@ alias co='cargo doc --open'
 alias gst='git status'
 alias n='nvim'
 alias q='exit'
+# alias y='yazi'
 alias adusr='sudo usermod -aG docker "$USER"'
 alias newdoc='newgrp docker'
-alias cv='cd ~/vscodeprojects'
 alias c='clear'
+alias cv='cd ~/vscodeprojects'
+alias ch='cd ~/'
+
+# for python virtual environment
+alias pyt='python3 -m venv venv && source venv/bin/activate'
+
+# for docker
+alias dc='docker compose'
+alias d='docker'
+
+# for claude
+alias claudedsp='claude --dangerously-skip-permissions'
+alias codexy='codex --yolo'
+alias geminiy='gemini --yolo'
+
+# Java_home symlink
+export JAVA_HOME=/opt/jdk-25.0.3+9
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Timer
+
+t() {
+  nohup bash -c "
+        sleep \$(( $1 * 60 ))
+        timeout 3s ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga >/dev/null 2>&1
+    " >/dev/null 2>&1 &
+}
+
 # creating repo from terminal
 create() {
   REPO_NAME=$1
@@ -176,6 +207,11 @@ export PATH=$PATH:/usr/local/go/bin
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 
-[[ ${BLE_VERSION-} ]] && ble-attach
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+source <(stellar completion --shell bash)
+export PATH=/usr/lib/llvm-16/bin:$PATH
 
+[[ ${BLE_VERSION-} ]] && ble-attach
 ##################################################
