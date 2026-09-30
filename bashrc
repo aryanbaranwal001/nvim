@@ -14,17 +14,14 @@ eval "$(starship init bash)"
 alias obsync='rclone sync ~/obsidianVaults obsidianNotes:obsidianVaults --progress'
 alias ck='cargo check'
 alias cr='cargo run'
-alias cbc='cargo build'
+alias cb='cargo build'
 alias co='cargo doc --open'
-alias gst='git status'
+
 alias n='nvim'
 alias q='exit'
 # alias y='yazi'
 alias adusr='sudo usermod -aG docker "$USER"'
 alias newdoc='newgrp docker'
-alias c='clear'
-alias cv='cd ~/vscodeprojects'
-alias ch='cd ~/'
 
 # for python virtual environment
 alias pyt='python3 -m venv venv && source venv/bin/activate'
@@ -34,18 +31,24 @@ alias dc='docker compose'
 alias d='docker'
 
 # for claude
-alias claudedsp='claude --dangerously-skip-permissions'
+alias cs='claude --dangerously-skip-permissions'
+alias csr='claude --dangerously-skip-permissions -r'
+
 alias codexy='codex --yolo'
 alias geminiy='gemini --yolo'
 
-# Java_home symlink
+# JAVA_HOME symlink
 export JAVA_HOME=/opt/jdk-25.0.3+9
 export PATH=$JAVA_HOME/bin:$PATH
+
+# JAVA Build Tool GRADLE
+export GRADLE_HOME=/opt/gradle-9.5.1
+export PATH=$GRADLE_HOME/bin:$PATH
 
 # Timer
 
 t() {
-  nohup bash -c "
+    nohup bash -c "
         sleep \$(( $1 * 60 ))
         timeout 3s ffplay -nodisp -autoexit /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga >/dev/null 2>&1
     " >/dev/null 2>&1 &
@@ -53,19 +56,19 @@ t() {
 
 # creating repo from terminal
 create() {
-  REPO_NAME=$1
+    REPO_NAME=$1
 
-  if [ -z "$REPO_NAME" ]; then
-    echo "Usage: create <repo-name>"
-    return 1
-  fi
+    if [ -z "$REPO_NAME" ]; then
+        echo "Usage: create <repo-name>"
+        return 1
+    fi
 
-  gh repo create "$REPO_NAME" --public --clone &&
-    cd "$REPO_NAME" &&
-    echo "# $REPO_NAME" >>README.md &&
-    git add README.md &&
-    git commit -m "init commit" &&
-    git push -u origin main
+    gh repo create "$REPO_NAME" --public --clone &&
+        cd "$REPO_NAME" &&
+        echo "# $REPO_NAME" >>README.md &&
+        git add README.md &&
+        git commit -m "init commit" &&
+        git push -u origin main
 }
 
 export EDITOR=nvim
@@ -73,11 +76,11 @@ export VISUAL=nvim
 
 # changing dir in yazi changes dir in terminal
 function y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  command yazi "$@" --cwd-file="$tmp"
-  IFS= read -r -d '' cwd <"$tmp"
-  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
-  rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd <"$tmp"
+    [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
 }
 
 #################################################
@@ -111,7 +114,7 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
@@ -125,41 +128,41 @@ esac
 #force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-  else
-    color_prompt=
-  fi
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm* | rxvt*)
-  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-  ;;
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
 *) ;;
 esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  #alias dir='dir --color=auto'
-  #alias vdir='vdir --color=auto'
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
@@ -180,18 +183,18 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 ################################################ My Area
@@ -215,3 +218,6 @@ export PATH=/usr/lib/llvm-16/bin:$PATH
 
 [[ ${BLE_VERSION-} ]] && ble-attach
 ##################################################
+
+# opencode
+export PATH=/home/mahoraga/.opencode/bin:$PATH
