@@ -26,3 +26,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertEnter" }, {
     vim.opt_local.spell = false
   end,
 })
+
+-- M: :MarkdownSnapshot, a detached browser preview of the markdown buffer
+require("config.markdown_snapshot")
