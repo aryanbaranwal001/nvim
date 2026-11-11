@@ -1,4 +1,22 @@
 -- M: added gitgraph to neovim
+
+-- draw the graph, then mark only the word of the local HEAD (not the branch it points to)
+-- so it stands apart from remote refs like origin/HEAD
+local function draw_graph()
+  require("gitgraph").draw({}, { all = true, max_count = 5000 })
+  local buf = vim.api.nvim_get_current_buf()
+  local ns = vim.api.nvim_create_namespace("gitgraph_local_head")
+  vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
+  for row, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+    local s, e = line:find("%(HEAD")
+    if s then
+      -- priority above the plugin's own highlights (4096), skip the "(" itself
+      vim.api.nvim_buf_set_extmark(buf, ns, row - 1, s, { end_col = e, hl_group = "GitGraphLocalHead", priority = 5000 })
+      break
+    end
+  end
+end
+
 return {
   {
     "isakbm/gitgraph.nvim",
@@ -43,7 +61,7 @@ return {
             elseif choice == "Checkout Commit" then
               vim.cmd(":!git checkout " .. commit.hash)
               vim.notify("Checked out " .. commit.hash, vim.log.levels.INFO)
-              require("gitgraph").draw({}, { all = true, max_count = 5000 })
+              draw_graph()
             end
           end)
         end,
@@ -84,6 +102,7 @@ return {
       vim.api.nvim_set_hl(0, "GitGraphAuthor", { fg = colors.author, italic = true })
       vim.api.nvim_set_hl(0, "GitGraphBranchName", { fg = colors.branch, bold = true })
       vim.api.nvim_set_hl(0, "GitGraphBranchMsg", { fg = colors.msg })
+      vim.api.nvim_set_hl(0, "GitGraphLocalHead", { fg = "#C586C0", bold = true, underline = true })
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "gitgraph",
@@ -118,9 +137,7 @@ return {
     keys = {
       {
         "<leader>gl",
-        function()
-          require("gitgraph").draw({}, { all = true, max_count = 5000 })
-        end,
+        draw_graph,
         desc = "GitGraph - Draw",
       },
     },
