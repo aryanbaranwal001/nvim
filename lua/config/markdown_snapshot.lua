@@ -11,6 +11,7 @@ local template = [[
 <title>%s</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github-dark.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
 <style>
   body { background: #0d1117; }
   .markdown-body { box-sizing: border-box; max-width: 980px; margin: 0 auto; padding: 45px; }
@@ -20,10 +21,14 @@ local template = [[
 <article class="markdown-body" id="content"></article>
 <script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked-katex-extension@5/lib/index.umd.js"></script>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
   const src = %s;
   const el = document.getElementById("content");
+  // $...$ inline math, $$...$$ display math; nonStandard allows $x$ next to punctuation
+  marked.use(markedKatex({ throwOnError: false, nonStandard: true }));
   el.innerHTML = marked.parse(src);
   el.querySelectorAll("pre > code.language-mermaid").forEach((code) => {
     const div = document.createElement("div");
